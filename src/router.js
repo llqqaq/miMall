@@ -1,73 +1,93 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './pages/home.vue'
-import Index from './pages/index.vue'
-import Product from './pages/product.vue'
-import Detail from './pages/detail.vue'
-import Cart from './pages/cart.vue'
-import Order from './pages/order.vue'
-import OrderConfirm from './pages/orderConfirm.vue'
-import OrderList from './pages/orderList.vue'
-import OrderPay from './pages/orderPay.vue'
-import AliPay from './pages/alipay.vue'
-Vue.use(Router)
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
 
-export default new Router({
+const router = new VueRouter({
     routes: [
         {
             path: '/',
             name: 'home',
-            component: Home,
+            component: () => import('./pages/home.vue'),
             redirect: '/index',
             children: [
                 {
                     path: 'index',
                     name: 'index',
-                    component: Index
+                    component: () => import('./pages/index.vue')
                 },
                 {
                     path: 'product/:id',
                     name: 'product',
-                    component: Product
+                    component: () => import('./pages/product.vue')
                 },
                 {
                     path: 'detail/:id',
                     name: 'detail',
-                    component: Detail
+                    component: import('./pages/detail.vue')
                 }
             ]
         },
         {
+            path: '/login',
+            name: 'login',
+            component: () => import('./pages/login.vue')
+        },
+        {
             path: '/cart',
             name: 'cart',
-            component: Cart
+            meta: {
+                needLogin: true
+            },
+            component: () => import('./pages/cart.vue')
         },
         {
             path: '/order',
             name: 'order',
-            component: Order,
+            meta: {
+                needLogin: true
+            },
+            component: () => import('./pages/order.vue'),
             children: [
                 {
                     path: 'list',
                     name: 'order-list',
-                    component: OrderList
+                    component: () => import('./pages/orderList.vue')
                 },
                 {
                     path: 'confirm',
                     name: 'order-corfirm',
-                    component: OrderConfirm
+                    component: () => import('./pages/orderConfirm.vue')
                 },
                 {
                     path: 'pay',
                     name: 'order-pay',
-                    component: OrderPay
+                    component: () => import('./pages/orderPay.vue')
                 },
                 {
                     path: 'alipay',
                     name: 'alipay',
-                    component: AliPay
+                    component: () => import('./pages/alipay.vue')
                 }
             ]
         },
     ]
 })
+
+//判断页面是否需要先登录
+router.beforeEach((to, from, next) => {
+    if (to.meta.needLogin) {
+        // console.log(new Vue().$cookie.get('userId'));
+        if (new Vue().$cookie.get('userId') == null) {
+            new Vue().$message.warning('正在跳转到登录界面')
+            setTimeout(() => {
+                router.push('/login')
+            }, 1000)
+        } else {
+            next()
+        }
+    } else {
+        next()
+    }
+})
+
+export default router

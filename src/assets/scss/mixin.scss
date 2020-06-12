@@ -1,0 +1,15 @@
+// 弹性布局
+@mixin flex($hov:space-between, $col:center) {
+    display        : flex;
+    justify-content: $hov;
+    align-items    : $col;
+}
+
+//背景图片
+@mixin bgImg($w:0, $h:0, $bgimg:'', $bgs:contain) {
+    display: inline-block;
+    width          : $w;
+    height         : $h;
+    background     : url($bgimg) no-repeat center;
+    background-size: $bgs;
+}
