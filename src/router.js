@@ -23,7 +23,7 @@ const router = new VueRouter({
                 {
                     path: 'detail/:id',
                     name: 'detail',
-                    component: import('./pages/detail.vue')
+                    component:() => import('./pages/detail.vue')
                 }
             ]
         },

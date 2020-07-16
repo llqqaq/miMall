@@ -45,8 +45,6 @@
           <swiper-slide>
             <img src="/imgs/product/gallery-6.jpg" alt />
           </swiper-slide>
-          <!-- Optional controls -->
-          <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
         <p class="desc">小米8 AI变焦双摄拍摄</p>
       </div>
@@ -85,14 +83,9 @@ export default {
       showSlide: "", //控制动画效果
       product: {}, //商品信息
       swiperOption: {
-        autoplay: true,
         slidesPerView: 3,
         spaceBetween: 30,
         freeMode: true,
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true
-        }
       }
     };
   },
